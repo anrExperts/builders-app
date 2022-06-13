@@ -120,6 +120,7 @@ function getInductionsHTML() {
     </head>
     <body>
       <h1>xpr — Builders App</h1>
+      <p>{user:current()}</p>
       {
         let $inductions := db:open('builders')/builders/inductions
         return

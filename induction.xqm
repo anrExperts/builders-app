@@ -120,7 +120,11 @@ function getInductionsHTML() {
     </head>
     <body>
       <h1>xpr — Builders App</h1>
-      <p>{user:current()}</p>
+      <p>{
+        if(Session:get('id')!='') then ('Bienvenue ' || Session:get('id') || ' ', <a href="/builders/logout">se déconnecter</a>)
+        else <a href="/builders/login">se connecter</a>
+      }</p>
+
       {
         let $inductions := db:open('builders')/builders/inductions
         return
@@ -135,6 +139,7 @@ function getInductionsHTML() {
                   "Réception de "
                   || $induction/description/candidate/persName/fn:string-join((fn:normalize-space(surname), fn:normalize-space(forename)), ', ')
                   || ' ',
+                  if(Session:get('id') and user:list-details(Session:get('id'))/*:info/*:grant/@type = 'inductions' and user:list-details(Session:get('id'))/*:database[@pattern='builders']/@permission = 'write') then
                   <a href="/builders/inductions/{fn:normalize-space($induction/@xml:id)}/modify">modifier</a>
                 }</li>
             }</ul>

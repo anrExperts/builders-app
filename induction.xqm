@@ -1,14 +1,14 @@
 xquery version "3.0";
 module namespace xpr.xpr = "xpr.xpr";
 (:~
- : This xquery module is an application for xpr
+ : This xquery module is an application for xpr — builders
  :
  : @author sardinecan (ANR Experts)
  : @since 2022-06
  : @licence GNU http://www.gnu.org/licenses
  : @version 0.2
  :
- : xpr is free software: you can redistribute it and/or modify
+ : builders is free software: you can redistribute it and/or modify
  : it under the terms of the GNU General Public License as published by
  : the Free Software Foundation, either version 3 of the License, or
  : (at your option) any later version.
@@ -69,15 +69,13 @@ declare
   %output:method("xml")
 function index() {
   if (db:exists("builders"))
-    then web:redirect("/builders/inductions")
+    then web:redirect("/builders/inductions/view")
     else web:redirect("/builders/install")
 };
 
 (:~
  : This resource function install
  : @return create the db
- :
- : @todo create the prosopo db
  :)
 declare
   %rest:path("/builders/install")
@@ -95,8 +93,8 @@ function buildersInstall() {
 };
 
 (:~
- : This resource function lists all the expertises
- : @return an ordered list of expertises in xml
+ : This resource function lists all the inductions
+ : @return an ordered list of inductions in xml
  :)
 declare
   %rest:path("/builders/inductions")
@@ -107,8 +105,8 @@ function getInductions() {
 };
 
 (:~
- : This resource function lists all the expertises
- : @return an ordered list of expertises in xml
+ : This resource function lists all the induction
+ : @return an ordered list of inductions in html
  :)
 declare
   %rest:path("/builders/inductions/view")
@@ -149,8 +147,8 @@ function getInductionsHTML() {
 };
 
 (:~
- : This resource function edits a new expertise
- : @return an xforms to edit an expertise
+ : This resource function edits a new induction
+ : @return an xforms to edit an induction
 :)
 declare
   %rest:path("builders/inductions/new")
@@ -174,9 +172,9 @@ function newInduction() {
 };
 
 (:~
- : This resource function modify an expertise item
- : @param $id the expertise id
- : @return an xforms to edit the expertise
+ : This resource function modify an induction item
+ : @param $id the induction id
+ : @return an induction in xml
  :)
 declare
   %rest:path("builders/inductions/{$id}")
@@ -186,9 +184,9 @@ function getInduction($id) {
 };
 
 (:~
- : This resource function modify an expertise item
- : @param $id the expertise id
- : @return an xforms to edit the expertise
+ : This resource function modify an induction item
+ : @param $id the induction id
+ : @return an xforms to edit the induction
  :)
 declare
   %rest:path("builders/inductions/{$id}/modify")
@@ -211,11 +209,10 @@ function modifyInduction($id) {
 };
 
 (:~
- : This function creates new expertises
+ : This function creates new inductions
  : @param $param content to insert in the database
  : @param $refere the callback url
  : @return update the database with an updated content and an 200 http
- : @bug change of cote and dossier doesn’t work
  :)
 declare
   %rest:path("builders/inductions/put")
@@ -279,7 +276,7 @@ function putInduction($param, $referer) {
 };
 
 (:~
- : Permissions: expertises
+ : Permissions: inductions
  : Checks if the current user is granted; if not, redirects to the login page.
  : @param $perm map with permission data
  :)

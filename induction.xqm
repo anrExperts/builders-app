@@ -319,9 +319,9 @@ function login($name, $pass) {
   try {
     user:check($name, $pass),
     Session:set('id', $name),
-    web:redirect("/builders/inductions")
+    web:redirect("/builders/inductions/view")
   } catch user:* {
-    web:redirect("/builders/inductions")
+    web:redirect("/builders/inductions/view")
   }
 };
 
@@ -329,5 +329,5 @@ declare
   %rest:path("builders/logout")
 function logout() {
   Session:delete('id'),
-  web:redirect("/builders/inductions")
+  web:redirect("/builders/inductions/view")
 };

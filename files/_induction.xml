@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<induction xmlns="xpr">
+    <sourceDesc>
+        <source>
+            <unitid></unitid>
+            <item></item>
+            <facsimile from="" to=""/>
+        </source>
+    </sourceDesc>
+    <description>
+        <candidate>
+            <persName ref="" cert="">
+                <surname/>
+                <forename/>
+                <note></note>
+            </persName>
+            <occupation/>
+            <address>
+                <street/>
+                <buildingNumber/>
+                <complement/>
+                <parish/>
+                <city/>
+            </address>
+        </candidate>
+        <petition>
+            <date when=""/>
+            <magistrate cert="">
+                <surname/>
+                <forename/>
+                <note/>
+            </magistrate>
+            <syndicCommunication>
+                <date when=""/>
+                <syndic cert="">
+                    <surname/>
+                    <forename/>
+                    <note/>
+                </syndic>
+                <response/>
+            </syndicCommunication>
+        </petition>
+        <manners>
+            <magistrate cert="">
+                <surname/>
+                <forename/>
+                <note/>
+            </magistrate>
+            <witnesses>
+                <witness>
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                    <age/>
+                    <address>
+                        <street/>
+                        <buildingNumber/>
+                        <complement/>
+                        <parish/>
+                        <city/>
+                    </address>
+                    <signature when=""/>
+                </witness>
+                <witness>
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                    <age/>
+                    <address>
+                        <street/>
+                        <buildingNumber/>
+                        <complement/>
+                        <parish/>
+                        <city/>
+                    </address>
+                    <signature when=""/>
+                </witness>
+                <witness>
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                    <age/>
+                    <address>
+                        <street/>
+                        <buildingNumber/>
+                        <complement/>
+                        <parish/>
+                        <city/>
+                    </address>
+                    <signature when=""/>
+                </witness>
+            </witnesses>
+        </manners>
+        <masterpiece>
+            <objectName/>
+            <date when=""/>
+            <patrons>
+                <patron oldest="true">
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                </patron>
+                <patron oldest="false">
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                </patron>
+                <patron oldest="false">
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                </patron>
+                <patron oldest="false">
+                    <persName ref="" cert="">
+                        <surname/>
+                        <forename/>
+                        <note/>
+                    </persName>
+                    <occupation/>
+                </patron>
+            </patrons>
+            <drawing>
+                <date when=""/>
+                <placeName/>
+            </drawing>
+            <stoneModel>
+                <date when=""/>
+                <placeName/>
+            </stoneModel>
+        </masterpiece>
+    </description>
+</induction>
+

@@ -1,0 +1,29 @@
+form {
+  width: 800px;
+  margin: auto;
+}
+
+xforms-group {
+  margin: 0 0 2em 0;
+}
+
+xforms-repeat {
+    padding-left: 10px;
+    border-left: 4px solid orangered;
+}
+
+form xforms-repeat-item {
+   display: block !important;
+   margin: 0 0 2em 0;
+   padding: 10px;
+   border-left: 2px solid teal;
+   border-bottom: 2px solid teal;
+}
+
+xforms-textarea {
+    width: 100%;
+}
+
+textarea {
+    width: 80%;
+}

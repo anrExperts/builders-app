@@ -1,0 +1,433 @@
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  lang="fr"
+  xmlns:ev="http://www.w3.org/2001/xml-events"
+  xmlns:xf="http://www.w3.org/2002/xforms"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xpr="xpr"
+  xmlns:rico="rico"
+  xpr:bogus="fix Firefox namespace issue"
+  xlink:bogus="fix Firefox namespace issue"
+  rico:bogus="fix Firefox namespace issue">
+  <head>
+    <title>xpr — Réceptions à la maîtrise</title>
+    <meta charset="utf-8" />
+    <link href="/builders/files/css/forms.css" rel="stylesheet" />
+    <xf:model id="inductionModel">
+      <xf:instance id="induction" src="/builders/files/_induction.xml"/>
+      <xf:bind nodeset="instance('induction')//@when" type="xf:date"/>
+      <xf:instance id="inductionCopy" src="/builders/files/_induction.xml"/>
+
+      <xf:instance id="xprExperts" src="/xpr/entities"/>
+
+      <xf:submission id="submit" resource="/builders/inductions/put" method="put" replace="none">
+        <xf:action ev:event="xforms-submit-done">
+          <xf:message level="modal">
+            La ressource a été enregistrée !
+            Status : <xf:output value="event('response-status-code')"/>;
+            URI : <xf:output value="event('resource-uri')"/>;
+            Headers : <xf:output value="event('response-headers')"/>;
+            Reason : <xf:output value="event('response-reason-phrase')"/>
+            Body : <xf:output value="event('response-body')"/>
+          </xf:message>
+          <xf:load resource="/builders/inductions/view" show="replace"/>
+        </xf:action>
+        <xf:action ev:event="xforms-submit-error">
+          <xf:message level="modal">
+            Une erreur est apparue : <xf:output value="event('error-type')"/>;
+            Status : <xf:output value="event('response-status-code')"/>;
+            URI : <xf:output value="event('resource-uri')"/>;
+            Headers : <xf:output value="event('response-headers')"/>;
+            Reason : <xf:output value="event('response-reason-phrase')"/>
+            Body : <xf:output value="event('response-body')"/>
+          </xf:message>
+        </xf:action>
+      </xf:submission>
+    </xf:model>
+
+  </head>
+  <body>
+    <h1>
+      Réception à la maîtrise 
+      <xf:output value="if(fn:normalize-space(instance('induction')/xpr:description/xpr:candidate/xpr:persName) != '',
+      concat(' de ', instance('induction')/xpr:description/xpr:candidate/xpr:persName/string-join((xpr:surname, xpr:forename), ', ')),
+      '')"/></h1>
+    <form>
+      <xf:trigger>
+        <xf:label>Description de la source</xf:label>
+        <xf:toggle case="sourceDescPanel" ev:event="DOMActivate" />
+      </xf:trigger>
+      <xf:trigger>
+        <xf:label>Aspirant</xf:label>
+        <xf:toggle case="candidatePanel" ev:event="DOMActivate" />
+      </xf:trigger>
+      <xf:trigger>
+        <xf:label>Supplique</xf:label>
+        <xf:toggle case="petitionPanel" ev:event="DOMActivate" />
+      </xf:trigger>
+      <xf:trigger>
+        <xf:label>Vie et mœurs</xf:label>
+        <xf:toggle case="mannersPanel" ev:event="DOMActivate" />
+      </xf:trigger>
+      <xf:trigger>
+        <xf:label>Chef-d'œuvre</xf:label>
+        <xf:toggle case="masterpiecePanel" ev:event="DOMActivate" />
+      </xf:trigger>
+
+      <xf:switch>
+        <xf:case id="sourceDescPanel" selected="true">
+          <xf:group ref="instance('induction')/xpr:sourceDesc">
+            <xf:label><xf:output value="if(count(instance('induction')/xpr:sourceDesc/xpr:source) > 1, 'Description des sources', 'Description de la source')"/></xf:label>
+              <xf:repeat nodeset="xpr:source">
+                <xf:group>
+                  <xf:label>Identifiants</xf:label>
+                  <xf:input ref="xpr:unitid" incremental="true">
+                    <xf:label>Cote</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:item" incremental="true">
+                    <xf:label>Foliotage</xf:label>
+                  </xf:input>
+                </xf:group>
+                <xf:group ref="xpr:facsimile">
+                  <xf:label>Identifiants des vues</xf:label>
+                  <xf:input ref="@from" incremental="true">
+                    <xf:label>Première vue</xf:label>
+                  </xf:input>
+                  <xf:input ref="@to" incremental="true">
+                    <xf:label>Dernière vue</xf:label>
+                  </xf:input>
+                </xf:group>
+                <xf:trigger>
+                  <xf:label>Supprimer une référence</xf:label>
+                  <xf:delete if="count(parent::xpr:sourceDesc/xpr:source) > 1" nodeset="." ev:event="DOMActivate"/>
+                </xf:trigger>
+              </xf:repeat>
+              <xf:trigger>
+                <xf:label>Ajouter une référence</xf:label>
+                <xf:insert context="." nodeset="xpr:source" origin="instance('inductionCopy')/xpr:sourceDesc/xpr:source" at="last()" position="after" ev:event="DOMActivate"/>
+              </xf:trigger>
+          </xf:group>
+        </xf:case>
+        <xf:case id="candidatePanel" selected="false">
+          <xf:group ref="instance('induction')/xpr:description/xpr:candidate">
+            <xf:label>Aspirant</xf:label>
+            <xf:group ref="xpr:persName">
+              <xf:input ref="xpr:surname">
+                <xf:label>Nom</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:forename">
+                <xf:label>Prénom</xf:label>
+              </xf:input>
+              <xf:select1 ref="@cert">
+                <xf:label>Certitude</xf:label>
+                <xf:item>
+                  <xf:label>haute</xf:label>
+                  <xf:value>high</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>moyenne</xf:label>
+                  <xf:value>medium</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>faible</xf:label>
+                  <xf:value>low</xf:value>
+                </xf:item>
+              </xf:select1>
+              <xf:select1 ref="@ref" incremental="true">
+                <xf:label>base xpr</xf:label>
+                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                  <xf:label ref="xpr:label"/>
+                  <xf:value value="concat('#', @xml:id)"/>
+                </xf:itemset>
+              </xf:select1>
+              <xf:textarea ref="xpr:note">
+                <xf:label>Note</xf:label>
+              </xf:textarea>
+            </xf:group>
+            <xf:textarea ref="xpr:occupation">
+              <xf:label>Fonctions, qualités, ou raisons de sa requête</xf:label>
+            </xf:textarea>
+            <xf:group ref="xpr:address">
+              <xf:label>Adresse</xf:label>
+              <xf:input ref="xpr:street">
+                <xf:label>Rue</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:buildingNumber">
+                <xf:label>Numéro</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:complement">
+                <xf:label>Complément d'adresse</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:parish">
+                <xf:label>Paroisse</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:city">
+                <xf:label>Ville</xf:label>
+              </xf:input>
+            </xf:group>
+          </xf:group>
+        </xf:case>
+        <xf:case id="petitionPanel" selected="false">
+          <xf:group ref="instance('induction')/xpr:description/xpr:petition">
+            <xf:label>Supplique</xf:label>
+            <xf:input ref="xpr:date/@when">
+              <xf:label>Date de la supplique</xf:label>
+            </xf:input>
+            <xf:group ref="xpr:magistrate">
+              <xf:label>Magistrat</xf:label>
+              <xf:input ref="xpr:surname">
+                <xf:label>Nom</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:forename">
+                <xf:label>Prénom</xf:label>
+              </xf:input>
+              <xf:select1 ref="@cert">
+                <xf:label>Certitude</xf:label>
+                <xf:item>
+                  <xf:label>haute</xf:label>
+                  <xf:value>high</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>moyenne</xf:label>
+                  <xf:value>medium</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>faible</xf:label>
+                  <xf:value>low</xf:value>
+                </xf:item>
+              </xf:select1>
+              <xf:textarea ref="xpr:note">
+                <xf:label>Note</xf:label>
+              </xf:textarea>
+            </xf:group>
+            <xf:group ref="xpr:syndicCommunication">
+              <xf:label>Communication au syndic ou procureur du roi</xf:label>
+              <xf:input ref="xpr:date/@when">
+                <xf:label>Date de la communication</xf:label>
+              </xf:input>
+              <xf:group ref="xpr:syndic">
+                <xf:label>Syndic ou procureur du roi</xf:label>
+                <xf:input ref="xpr:surname">
+                  <xf:label>Nom</xf:label>
+                </xf:input>
+                <xf:input ref="xpr:forename">
+                  <xf:label>Prénom</xf:label>
+                </xf:input>
+                <xf:select1 ref="@cert">
+                  <xf:label>Certitude</xf:label>
+                  <xf:item>
+                    <xf:label>haute</xf:label>
+                    <xf:value>high</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>moyenne</xf:label>
+                    <xf:value>medium</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>faible</xf:label>
+                    <xf:value>low</xf:value>
+                  </xf:item>
+                </xf:select1>
+                <xf:textarea ref="xpr:note">
+                  <xf:label>Note</xf:label>
+                </xf:textarea>
+              </xf:group>
+              <xf:textarea ref="xpr:response">
+                <xf:label>Réponse du syndic</xf:label>
+              </xf:textarea>
+            </xf:group>
+          </xf:group>
+        </xf:case>
+        <xf:case id="mannersPanel" selected="false">
+          <xf:group ref="instance('induction')/xpr:description/xpr:manners">
+            <xf:label>Information de vie et mœurs, religion catholique, apostolique et romaine et fidélité au service du roi et du public</xf:label>
+            <br/>
+            <xf:group ref="xpr:magistrate">
+              <xf:label>Magistrat</xf:label>
+              <xf:input ref="xpr:surname">
+                <xf:label>Nom</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:forename">
+                <xf:label>Prénom</xf:label>
+              </xf:input>
+              <xf:select1 ref="@cert">
+                <xf:label>Certitude</xf:label>
+                <xf:item>
+                  <xf:label>haute</xf:label>
+                  <xf:value>high</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>moyenne</xf:label>
+                  <xf:value>medium</xf:value>
+                </xf:item>
+                <xf:item>
+                  <xf:label>faible</xf:label>
+                  <xf:value>low</xf:value>
+                </xf:item>
+              </xf:select1>
+              <xf:textarea ref="xpr:note">
+                <xf:label>Note</xf:label>
+              </xf:textarea>
+            </xf:group>
+            <xf:group ref="xpr:witnesses">
+              <xf:label>Témoins (déclarant ne pas être ni parent, ni allié, ni serviteur, ni domestique)</xf:label>
+              <xf:repeat nodeset="xpr:witness">
+                <xf:label>Témoin</xf:label>
+                <xf:group ref="xpr:persName">
+                  <xf:input ref="xpr:surname">
+                    <xf:label>Nom</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:forename">
+                    <xf:label>Prénom</xf:label>
+                  </xf:input>
+                  <xf:select1 ref="@cert">
+                    <xf:label>Certitude</xf:label>
+                    <xf:item>
+                      <xf:label>haute</xf:label>
+                      <xf:value>high</xf:value>
+                    </xf:item>
+                    <xf:item>
+                      <xf:label>moyenne</xf:label>
+                      <xf:value>medium</xf:value>
+                    </xf:item>
+                    <xf:item>
+                      <xf:label>faible</xf:label>
+                      <xf:value>low</xf:value>
+                    </xf:item>
+                  </xf:select1>
+                  <xf:select1 ref="@ref" incremental="true">
+                    <xf:label>base xpr</xf:label>
+                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                      <xf:label ref="xpr:label"/>
+                      <xf:value value="concat('#', @xml:id)"/>
+                    </xf:itemset>
+                  </xf:select1>
+                  <xf:textarea ref="xpr:note">
+                    <xf:label>Note</xf:label>
+                  </xf:textarea>
+                </xf:group>
+                <xf:input ref="xpr:occupation">
+                  <xf:label>Qualités</xf:label>
+                </xf:input>
+                <xf:group ref="xpr:address">
+                  <xf:label>Adresse</xf:label>
+                  <xf:input ref="xpr:street">
+                    <xf:label>Rue</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:buildingNumber">
+                    <xf:label>Numéro</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:complement">
+                    <xf:label>Complément d'adresse</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:parish">
+                    <xf:label>Paroisse</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:city">
+                    <xf:label>Ville</xf:label>
+                  </xf:input>
+                </xf:group>
+                <xf:input ref="xpr:age">
+                  <xf:label>Âge</xf:label>
+                </xf:input>
+                <xf:select1 ref="xpr:signature">
+                  <xf:label>Signature</xf:label>
+                  <xf:item>
+                    <xf:label>oui</xf:label>
+                    <xf:value>true</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>non</xf:label>
+                    <xf:value>false</xf:value>
+                  </xf:item>
+                </xf:select1>
+                <xf:input ref="xpr:signature/@when">
+                  <xf:label>Date de la signature</xf:label>
+                </xf:input>
+              </xf:repeat>
+            </xf:group>
+          </xf:group>
+        </xf:case>
+        <xf:case id="masterpiecePanel" selected="false">
+          <xf:group ref="instance('induction')/xpr:description/xpr:masterpiece">
+            <xf:label>Chef d’œuvre</xf:label>
+            <xf:textarea ref="xpr:objectName">
+              <xf:label>Dénomination</xf:label>
+            </xf:textarea>
+            <xf:group ref="xpr:patrons">
+              <!-- @todo lier avec le corpus d'experts -->
+              <xf:label>Parrains</xf:label>
+              <xf:repeat nodeset="xpr:patron">
+                <xf:label>Parrain <xf:output value="if(@oldest='true', '(le plus ancien)', '')"/></xf:label>
+                <xf:group ref="xpr:persName">
+                  <xf:input ref="xpr:surname">
+                    <xf:label>Nom</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:forename">
+                    <xf:label>Prénom</xf:label>
+                  </xf:input>
+                  <xf:select1 ref="@cert">
+                    <xf:label>Certitude</xf:label>
+                    <xf:item>
+                      <xf:label>haute</xf:label>
+                      <xf:value>high</xf:value>
+                    </xf:item>
+                    <xf:item>
+                      <xf:label>moyenne</xf:label>
+                      <xf:value>medium</xf:value>
+                    </xf:item>
+                    <xf:item>
+                      <xf:label>faible</xf:label>
+                      <xf:value>low</xf:value>
+                    </xf:item>
+                  </xf:select1>
+                  <xf:select1 ref="@ref" incremental="true">
+                    <xf:label>base xpr</xf:label>
+                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                      <xf:label ref="xpr:label"/>
+                      <xf:value value="concat('#', @xml:id)"/>
+                    </xf:itemset>
+                  </xf:select1>
+                  <xf:textarea ref="xpr:note">
+                    <xf:label>Note</xf:label>
+                  </xf:textarea>
+                </xf:group>
+                <xf:input ref="xpr:occupation">
+                  <xf:label>Qualités</xf:label>
+                </xf:input>
+              </xf:repeat>
+            </xf:group>
+            <xf:group ref="xpr:drawing">
+              <xf:label>Tracer et dessiner sur des cartons le trait géométrique</xf:label>
+              <xf:input ref="xpr:date/@when">
+                <xf:label>Date</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:placeName">
+                <xf:label>Lieu</xf:label>
+              </xf:input>
+            </xf:group>
+            <xf:group ref="xpr:stoneModel">
+              <xf:label>Réaliser un modèle en pierre</xf:label>
+              <xf:input ref="xpr:date/@when">
+                <xf:label>Date</xf:label>
+              </xf:input>
+              <xf:input ref="xpr:placeName">
+                <xf:label>Lieu</xf:label>
+              </xf:input>
+            </xf:group>
+            <xf:input ref="xpr:date/@when">
+              <xf:label>Date de réception / enregistrement</xf:label>
+            </xf:input>
+          </xf:group>
+        </xf:case>
+      </xf:switch>
+      <xf:trigger>
+        <xf:label>Enregistrer</xf:label>
+        <xf:action ev:event="DOMActivate">
+          <xf:send submission="submit"/>
+        </xf:action>
+      </xf:trigger>
+    </form>
+  </body>
+</html>

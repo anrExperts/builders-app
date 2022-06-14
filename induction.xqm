@@ -121,7 +121,7 @@ function getInductionsHTML() {
     <body>
       <h1>xpr — Builders App</h1>
       <p>{
-        if(Session:get('id')!='') then ('Bienvenue ' || Session:get('id') || ' ', <a href="/builders/logout">se déconnecter</a>)
+        if(Session:get('id')!='') then ('Bienvenue ' || Session:get('id') || ' ', <a href="/builders/logout">se déconnecter</a>, <br/>,<a href="/builders/inductions/new">Accéder au formulaire</a>)
         else <a href="/builders/login">se connecter</a>
       }</p>
 
@@ -129,7 +129,7 @@ function getInductionsHTML() {
         let $inductions := db:open('builders')/builders/inductions
         return
           if(fn:normalize-space($inductions) = '') then
-            <p>Aucune réception. <a href="/builders/inductions/new">Accéder au formulaire</a></p>
+            <p>Aucune réception.</p>
           else(
             <h2>Liste des réceptions à la maîtrise</h2>,
             <ul>{

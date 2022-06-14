@@ -197,6 +197,13 @@
                   <xf:value>low</xf:value>
                 </xf:item>
               </xf:select1>
+              <xf:select1 ref="@ref" incremental="true">
+                <xf:label>base xpr</xf:label>
+                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                  <xf:label ref="xpr:label"/>
+                  <xf:value value="concat('#', @xml:id)"/>
+                </xf:itemset>
+              </xf:select1>
               <xf:textarea ref="xpr:note">
                 <xf:label>Note</xf:label>
               </xf:textarea>
@@ -265,6 +272,13 @@
                   <xf:label>faible</xf:label>
                   <xf:value>low</xf:value>
                 </xf:item>
+              </xf:select1>
+              <xf:select1 ref="@ref" incremental="true">
+                <xf:label>base xpr</xf:label>
+                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                  <xf:label ref="xpr:label"/>
+                  <xf:value value="concat('#', @xml:id)"/>
+                </xf:itemset>
               </xf:select1>
               <xf:textarea ref="xpr:note">
                 <xf:label>Note</xf:label>

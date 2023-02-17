@@ -51,8 +51,10 @@
     <h1>
       Réception à la maîtrise 
       <xf:output value="if(fn:normalize-space(instance('induction')/xpr:description/xpr:candidate/xpr:persName) != '',
-      concat(' de ', instance('induction')/xpr:description/xpr:candidate/xpr:persName/string-join((xpr:surname, xpr:forename), ', ')),
-      '')"/></h1>
+      concat(' de ',
+      instance('induction')/xpr:description/xpr:candidate/xpr:persName/xpr:surname,
+      ', ',
+      instance('induction')/xpr:description/xpr:candidate/xpr:persName/xpr:forename), '')"/></h1>
     <form>
       <xf:trigger>
         <xf:label>Description de la source</xf:label>

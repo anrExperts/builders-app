@@ -21,6 +21,18 @@
 
       <xf:instance id="xprExperts" src="/xpr/entities"/>
 
+      <xf:instance id="prosecutorCommunication">
+        <prosecutorCommunication xmlns="xpr">
+          <date when=""/>
+          <prosecutor cert="">
+            <surname/>
+            <forename/>
+            <note/>
+          </prosecutor>
+          <response when=""/>
+        </prosecutorCommunication>
+      </xf:instance>
+
       <xf:submission id="submit" resource="/builders/inductions/put" method="put" replace="none">
         <xf:action ev:event="xforms-submit-done">
           <xf:message level="modal">
@@ -138,6 +150,10 @@
               </xf:select1>
               <xf:select1 ref="@ref" incremental="true">
                 <xf:label>base xpr</xf:label>
+                <xf:item>
+                  <xf:label/>
+                  <xf:value/>
+                </xf:item>
                 <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
                   <xf:label ref="xpr:label"/>
                   <xf:value value="concat('#', @xml:id)"/>
@@ -201,6 +217,10 @@
               </xf:select1>
               <xf:select1 ref="@ref" incremental="true">
                 <xf:label>base xpr</xf:label>
+                <xf:item>
+                  <xf:label/>
+                  <xf:value/>
+                </xf:item>
                 <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
                   <xf:label ref="xpr:label"/>
                   <xf:value value="concat('#', @xml:id)"/>
@@ -210,13 +230,23 @@
                 <xf:label>Note</xf:label>
               </xf:textarea>
             </xf:group>
-            <xf:group ref="xpr:syndicCommunication">
-              <xf:label>Communication au syndic ou procureur du roi</xf:label>
+            <xf:trigger ref=".[not(xpr:prosecutorCommunication)]">
+              <xf:label>Communication au procureur du roi</xf:label>
+              <xf:insert context="." nodeset="xpr:syndicCommunication" origin="instance('prosecutorCommunication')" position="before" ev:event="DOMActivate"/>
+            </xf:trigger>
+            <xf:group ref="xpr:prosecutorCommunication">
+              <xf:label>
+                Communication au procureur du roi
+                <xf:trigger>
+                  <xf:label>×</xf:label>
+                  <xf:delete nodeset="." ev:event="DOMActivate"/>
+                </xf:trigger>
+              </xf:label>
               <xf:input ref="xpr:date/@when">
                 <xf:label>Date de la communication</xf:label>
               </xf:input>
-              <xf:group ref="xpr:syndic">
-                <xf:label>Syndic ou procureur du roi</xf:label>
+              <xf:group ref="xpr:prosecutor">
+                <xf:label>Procureur du roi</xf:label>
                 <xf:input ref="xpr:surname">
                   <xf:label>Nom</xf:label>
                 </xf:input>
@@ -242,9 +272,57 @@
                   <xf:label>Note</xf:label>
                 </xf:textarea>
               </xf:group>
-              <xf:textarea ref="xpr:response">
+              <xf:group ref="xpr:response">
+              <xf:label>Réponse du procureur du roi</xf:label>
+                <xf:input ref="@when">
+                  <xf:label>Date</xf:label>
+                </xf:input>
+                <xf:textarea ref=".">
+                  <xf:label>Réponse</xf:label>
+                </xf:textarea>
+              </xf:group>
+            </xf:group>
+            <xf:group ref="xpr:syndicCommunication">
+              <xf:label>Communication au syndic</xf:label>
+              <xf:input ref="xpr:date/@when">
+                <xf:label>Date de la communication</xf:label>
+              </xf:input>
+              <xf:group ref="xpr:syndic">
+                <xf:label>Syndic</xf:label>
+                <xf:input ref="xpr:surname">
+                  <xf:label>Nom</xf:label>
+                </xf:input>
+                <xf:input ref="xpr:forename">
+                  <xf:label>Prénom</xf:label>
+                </xf:input>
+                <xf:select1 ref="@cert">
+                  <xf:label>Certitude</xf:label>
+                  <xf:item>
+                    <xf:label>haute</xf:label>
+                    <xf:value>high</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>moyenne</xf:label>
+                    <xf:value>medium</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>faible</xf:label>
+                    <xf:value>low</xf:value>
+                  </xf:item>
+                </xf:select1>
+                <xf:textarea ref="xpr:note">
+                  <xf:label>Note</xf:label>
+                </xf:textarea>
+              </xf:group>
+              <xf:group ref="xpr:response">
                 <xf:label>Réponse du syndic</xf:label>
-              </xf:textarea>
+                <xf:input ref="@when">
+                  <xf:label>Date</xf:label>
+                </xf:input>
+                <xf:textarea ref=".">
+                  <xf:label>Réponse</xf:label>
+                </xf:textarea>
+              </xf:group>
             </xf:group>
           </xf:group>
         </xf:case>
@@ -252,6 +330,12 @@
           <xf:group ref="instance('induction')/xpr:description/xpr:manners">
             <xf:label>Information de vie et mœurs, religion catholique, apostolique et romaine et fidélité au service du roi et du public</xf:label>
             <br/>
+            <xf:input ref="xpr:date[@type='ruling']/@when">
+              <xf:label>Date de l’ordonnance de soit montré</xf:label>
+            </xf:input>
+            <xf:input ref="xpr:date[@type='manners']/@when">
+              <xf:label>Date de l’instruction de vie et mœurs</xf:label>
+            </xf:input>
             <xf:group ref="xpr:magistrate">
               <xf:label>Magistrat</xf:label>
               <xf:input ref="xpr:surname">
@@ -277,11 +361,33 @@
               </xf:select1>
               <xf:select1 ref="@ref" incremental="true">
                 <xf:label>base xpr</xf:label>
+                <xf:item>
+                  <xf:label/>
+                  <xf:value/>
+                </xf:item>
                 <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
                   <xf:label ref="xpr:label"/>
                   <xf:value value="concat('#', @xml:id)"/>
                 </xf:itemset>
               </xf:select1>
+              <xf:group ref="xpr:address">
+                  <xf:label>Adresse</xf:label>
+                  <xf:input ref="xpr:street">
+                    <xf:label>Rue</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:buildingNumber">
+                    <xf:label>Numéro</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:complement">
+                    <xf:label>Complément d'adresse</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:parish">
+                    <xf:label>Paroisse</xf:label>
+                  </xf:input>
+                  <xf:input ref="xpr:city">
+                    <xf:label>Ville</xf:label>
+                  </xf:input>
+                </xf:group>
               <xf:textarea ref="xpr:note">
                 <xf:label>Note</xf:label>
               </xf:textarea>
@@ -314,6 +420,10 @@
                   </xf:select1>
                   <xf:select1 ref="@ref" incremental="true">
                     <xf:label>base xpr</xf:label>
+                    <xf:item>
+                      <xf:label/>
+                      <xf:value/>
+                    </xf:item>
                     <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
                       <xf:label ref="xpr:label"/>
                       <xf:value value="concat('#', @xml:id)"/>
@@ -344,9 +454,22 @@
                     <xf:label>Ville</xf:label>
                   </xf:input>
                 </xf:group>
-                <xf:input ref="xpr:age">
-                  <xf:label>Âge</xf:label>
-                </xf:input>
+                <xf:group ref="xpr:age">
+                  <xf:input ref=".">
+                    <xf:label>Âge</xf:label>
+                  </xf:input>
+                  <xf:select1 ref="@approximate">
+                  <xf:label>Âge approximatif</xf:label>
+                  <xf:item>
+                    <xf:label>Oui</xf:label>
+                    <xf:value>true</xf:value>
+                  </xf:item>
+                  <xf:item>
+                    <xf:label>Non</xf:label>
+                    <xf:value>false</xf:value>
+                  </xf:item>
+                  </xf:select1>
+                </xf:group>
                 <xf:select1 ref="xpr:signature">
                   <xf:label>Signature</xf:label>
                   <xf:item>
@@ -358,9 +481,6 @@
                     <xf:value>false</xf:value>
                   </xf:item>
                 </xf:select1>
-                <xf:input ref="xpr:signature/@when">
-                  <xf:label>Date de la signature</xf:label>
-                </xf:input>
               </xf:repeat>
             </xf:group>
           </xf:group>
@@ -372,10 +492,26 @@
               <xf:label>Dénomination</xf:label>
             </xf:textarea>
             <xf:group ref="xpr:patrons">
-              <!-- @todo lier avec le corpus d'experts -->
               <xf:label>Parrains</xf:label>
               <xf:repeat nodeset="xpr:patron">
-                <xf:label>Parrain <xf:output value="if(@oldest='true', '(le plus ancien)', '')"/></xf:label>
+                <xf:label>
+                  Parrain <xf:output value="if(@oldest='true', ' (le plus ancien)', '')"/>
+                  <xf:trigger ref=".[not(@oldest='true')]">
+                    <xf:label>×</xf:label>
+                    <xf:delete nodeset="." ev:event="DOMActivate"/>
+                </xf:trigger>
+                </xf:label>
+                <xf:select1 ref="@citedInRuling">
+                    <xf:label>Mentionné dans l’ordonnance</xf:label>
+                    <xf:item>
+                      <xf:label>Oui</xf:label>
+                      <xf:value>true</xf:value>
+                    </xf:item>
+                    <xf:item>
+                      <xf:label>Non</xf:label>
+                      <xf:value>false</xf:value>
+                    </xf:item>
+                  </xf:select1>
                 <xf:group ref="xpr:persName">
                   <xf:input ref="xpr:surname">
                     <xf:label>Nom</xf:label>
@@ -400,6 +536,10 @@
                   </xf:select1>
                   <xf:select1 ref="@ref" incremental="true">
                     <xf:label>base xpr</xf:label>
+                    <xf:item>
+                      <xf:label/>
+                      <xf:value/>
+                    </xf:item>
                     <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
                       <xf:label ref="xpr:label"/>
                       <xf:value value="concat('#', @xml:id)"/>
@@ -413,6 +553,15 @@
                   <xf:label>Qualités</xf:label>
                 </xf:input>
               </xf:repeat>
+              <xf:trigger>
+                <xf:label>Ajouter un parrain</xf:label>
+                <xf:insert context="." nodeset="xpr:patron" origin="instance('inductionCopy')/xpr:description/xpr:masterpiece/xpr:patrons/xpr:patron[last()]" at="last()" position="after" ev:event="DOMActivate"/>
+              </xf:trigger>
+            </xf:group>
+            <xf:group>
+              <xf:input ref="xpr:date[@type='ruling']/@when">
+                <xf:label>Date de l’ordonnance</xf:label>
+              </xf:input>
             </xf:group>
             <xf:group ref="xpr:drawing">
               <xf:label>Tracer et dessiner sur des cartons le trait géométrique</xf:label>
@@ -432,9 +581,20 @@
                 <xf:label>Lieu</xf:label>
               </xf:input>
             </xf:group>
-            <xf:input ref="xpr:date/@when">
-              <xf:label>Date de réception / enregistrement</xf:label>
-            </xf:input>
+            <xf:group>
+              <xf:input ref="xpr:date[@type='certificate']/@when">
+                <xf:label>Date de certificat</xf:label>
+              </xf:input>
+            </xf:group>
+            <xf:group>
+              <xf:input ref="xpr:date[@type='induction']/@when">
+                <xf:label>Date de réception / enregistrement</xf:label>
+              </xf:input>
+            </xf:group>
+            <xf:group ref="xpr:induction">
+              <xf:label>Réception</xf:label>
+              <xf:textarea ref="."/>
+            </xf:group>
           </xf:group>
         </xf:case>
       </xf:switch>

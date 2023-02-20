@@ -37,13 +37,22 @@
                     <forename/>
                     <note/>
                 </syndic>
-                <response/>
+                <response when=""/>
             </syndicCommunication>
         </petition>
         <manners>
+            <date type="ruling" when="" />
+            <date type="manners" when="" />
             <magistrate ref="" cert="">
                 <surname/>
                 <forename/>
+                <address>
+                    <street/>
+                    <buildingNumber/>
+                    <complement/>
+                    <parish/>
+                    <city/>
+                </address>
                 <note/>
             </magistrate>
             <witnesses>
@@ -54,7 +63,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age/>
+                    <age approximate="false"/>
                     <address>
                         <street/>
                         <buildingNumber/>
@@ -62,7 +71,7 @@
                         <parish/>
                         <city/>
                     </address>
-                    <signature when=""/>
+                    <signature/>
                 </witness>
                 <witness>
                     <persName ref="" cert="">
@@ -71,7 +80,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age/>
+                    <age approximate="false"/>
                     <address>
                         <street/>
                         <buildingNumber/>
@@ -79,7 +88,7 @@
                         <parish/>
                         <city/>
                     </address>
-                    <signature when=""/>
+                    <signature/>
                 </witness>
                 <witness>
                     <persName ref="" cert="">
@@ -88,7 +97,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age/>
+                    <age approximate="false"/>
                     <address>
                         <street/>
                         <buildingNumber/>
@@ -96,15 +105,17 @@
                         <parish/>
                         <city/>
                     </address>
-                    <signature when=""/>
+                    <signature/>
                 </witness>
             </witnesses>
         </manners>
         <masterpiece>
             <objectName/>
-            <date when=""/>
+            <date type="ruling" when=""/>
+            <date type="certificate" when=""/>
+            <date type="induction" when=""/>
             <patrons>
-                <patron oldest="true">
+                <patron oldest="true" citedInRuling="">
                     <persName ref="" cert="">
                         <surname/>
                         <forename/>
@@ -112,7 +123,7 @@
                     </persName>
                     <occupation/>
                 </patron>
-                <patron oldest="false">
+                <patron oldest="false" citedInRuling="">
                     <persName ref="" cert="">
                         <surname/>
                         <forename/>
@@ -120,7 +131,7 @@
                     </persName>
                     <occupation/>
                 </patron>
-                <patron oldest="false">
+                <patron oldest="false" citedInRuling="">
                     <persName ref="" cert="">
                         <surname/>
                         <forename/>
@@ -128,7 +139,7 @@
                     </persName>
                     <occupation/>
                 </patron>
-                <patron oldest="false">
+                <patron oldest="false" citedInRuling="">
                     <persName ref="" cert="">
                         <surname/>
                         <forename/>
@@ -145,6 +156,7 @@
                 <date when=""/>
                 <placeName/>
             </stoneModel>
+            <induction/>
         </masterpiece>
     </description>
 </induction>

@@ -63,7 +63,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age approximate="false"/>
+                    <age approximate="true"/>
                     <address>
                         <street/>
                         <buildingNumber/>
@@ -80,7 +80,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age approximate="false"/>
+                    <age approximate="true"/>
                     <address>
                         <street/>
                         <buildingNumber/>
@@ -97,7 +97,7 @@
                         <note/>
                     </persName>
                     <occupation/>
-                    <age approximate="false"/>
+                    <age approximate="true"/>
                     <address>
                         <street/>
                         <buildingNumber/>

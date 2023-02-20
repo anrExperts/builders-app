@@ -330,12 +330,16 @@
           <xf:group ref="instance('induction')/xpr:description/xpr:manners">
             <xf:label>Information de vie et mœurs, religion catholique, apostolique et romaine et fidélité au service du roi et du public</xf:label>
             <br/>
-            <xf:input ref="xpr:date[@type='ruling']/@when">
-              <xf:label>Date de l’ordonnance de soit fait</xf:label>
-            </xf:input>
-            <xf:input ref="xpr:date[@type='manners']/@when">
-              <xf:label>Date de l’instruction de vie et mœurs</xf:label>
-            </xf:input>
+            <xf:group>
+              <xf:input ref="xpr:date[@type='ruling']/@when">
+                <xf:label>Date de l’ordonnance de soit fait</xf:label>
+              </xf:input>
+            </xf:group>
+            <xf:group>
+              <xf:input ref="xpr:date[@type='manners']/@when">
+                <xf:label>Date de l’information de vie et mœurs</xf:label>
+              </xf:input>
+            </xf:group>
             <xf:group ref="xpr:magistrate">
               <xf:label>Magistrat</xf:label>
               <xf:input ref="xpr:surname">

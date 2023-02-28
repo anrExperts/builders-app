@@ -507,6 +507,10 @@
                 </xf:label>
                 <xf:select1 ref="@citedInRuling">
                     <xf:label>Mentionné dans l’ordonnance</xf:label>
+                  <xf:item>
+                    <xf:label></xf:label>
+                    <xf:value></xf:value>
+                  </xf:item>
                     <xf:item>
                       <xf:label>Oui</xf:label>
                       <xf:value>true</xf:value>

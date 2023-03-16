@@ -502,7 +502,7 @@
               </xf:repeat>
               <xf:trigger>
                 <xf:label>Ajouter un témoin</xf:label>
-                <xf:insert context="." nodeset="xpr:witness" origin="instance('inductionCopy')/xpr:description/xpr:manners/xpr:witnesses/xpr:witness" at="last()" position="after" ev:event="DOMActivate"/>
+                <xf:insert context="." nodeset="xpr:witness" origin="instance('inductionCopy')/xpr:description/xpr:manners/xpr:witnesses/xpr:witness[last()]" at="last()" position="after" ev:event="DOMActivate"/>
               </xf:trigger>
             </xf:group>
           </xf:group>

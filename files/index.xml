@@ -407,7 +407,13 @@
             <xf:group ref="xpr:witnesses">
               <xf:label>Témoins (déclarant ne pas être ni parent, ni allié, ni serviteur, ni domestique)</xf:label>
               <xf:repeat nodeset="xpr:witness">
-                <xf:label>Témoin</xf:label>
+                <xf:label>
+                  Témoin
+                  <xf:trigger>
+                    <xf:label>×</xf:label>
+                    <xf:delete nodeset="." ev:event="DOMActivate"/>
+                  </xf:trigger>
+                </xf:label>
                 <xf:group ref="xpr:persName">
                   <xf:input ref="xpr:surname">
                     <xf:label>Nom</xf:label>
@@ -494,6 +500,10 @@
                   </xf:item>
                 </xf:select1>
               </xf:repeat>
+              <xf:trigger>
+                <xf:label>Ajouter un témoin</xf:label>
+                <xf:insert context="." nodeset="xpr:witness" origin="instance('inductionCopy')/xpr:description/xpr:manners/xpr:witnesses/xpr:witness" at="last()" position="after" ev:event="DOMActivate"/>
+              </xf:trigger>
             </xf:group>
           </xf:group>
         </xf:case>

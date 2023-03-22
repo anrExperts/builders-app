@@ -229,7 +229,7 @@
                   <xf:label/>
                   <xf:value/>
                 </xf:item>
-                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert' or @type='expert clerk' or @type='clerk expert']">
                   <xf:label ref="xpr:label"/>
                   <xf:value value="concat('#', @xml:id)"/>
                 </xf:itemset>
@@ -377,7 +377,7 @@
                   <xf:label/>
                   <xf:value/>
                 </xf:item>
-                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert' or @type='expert clerk' or @type='clerk expert']">
                   <xf:label ref="xpr:label"/>
                   <xf:value value="concat('#', @xml:id)"/>
                 </xf:itemset>
@@ -442,7 +442,7 @@
                       <xf:label/>
                       <xf:value/>
                     </xf:item>
-                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert' or @type='expert clerk' or @type='clerk expert']">
                       <xf:label ref="xpr:label"/>
                       <xf:value value="concat('#', @xml:id)"/>
                     </xf:itemset>
@@ -566,7 +566,7 @@
                       <xf:label/>
                       <xf:value/>
                     </xf:item>
-                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert']">
+                    <xf:itemset nodeset="instance('xprExperts')/xpr:entity[@type='expert' or @type='altExpert' or @type='expert clerk' or @type='clerk expert']">
                       <xf:label ref="xpr:label"/>
                       <xf:value value="concat('#', @xml:id)"/>
                     </xf:itemset>

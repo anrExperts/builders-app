@@ -134,6 +134,7 @@ function getInductionsHTML() {
             <h2>Liste des réceptions à la maîtrise</h2>,
             <ul>{
               for $induction in $inductions/induction
+              order by $induction/description/candidate/persName/fn:normalize-space() descending
               return
                 <li>{
                   "Réception de "
